@@ -4,6 +4,7 @@ import bodyParser from "body-parser"
 import cors from "cors";
 import sequelize from "../providers/db"
 import { Sequelize } from "sequelize-typescript";
+import routes from "../routes/v1/userRoutes"
 require('dotenv').config()
 
 export default class App {
@@ -12,6 +13,7 @@ export default class App {
     private app: express.Application
     private server: Server
     private sequelize: Sequelize
+    
 
     constructor(port = 8000, host = "localhost") {
         this.port = Number(process.env.PORT) || port
@@ -24,6 +26,7 @@ export default class App {
         const app = express()
         app.use(cors());
         app.use(bodyParser.json())
+        app.use('/v1', routes)
         return app
       }
     private createServer(): Server {
