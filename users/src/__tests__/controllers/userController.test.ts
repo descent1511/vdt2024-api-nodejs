@@ -1,3 +1,4 @@
+import { Op } from 'sequelize';
 import UserController from '../../controllers/userController';
 import { User } from '../../models/user';
 import { 
@@ -173,6 +174,72 @@ describe('UserController', () => {
             await userController.deleteUser(req, res);
 
             expect(User.findByPk).toHaveBeenCalledWith(req.params.id);
+            expect(sendErrorResponse).toHaveBeenCalledWith(res, error);
+        });
+    });
+
+    describe('searchUserByName', () => {
+        it('should return users matching the search query case-insensitively', async () => {
+            const mockUsers = [
+                { fullName: 'Hoang Truong', email: 'example@example.com' },
+                { fullName: 'Hoang Nhat', email: 'Nhat@example.com' }
+            ];
+            req.query = { search: 'hoang' };
+
+            (User.findAll as jest.Mock).mockResolvedValue(mockUsers);
+
+            await userController.searchUserByName(req, res);
+
+            expect(User.findAll).toHaveBeenCalledWith({
+                where: {
+                    fullName: {
+                        [Op.iLike]: `%${req.query.search}%`
+                    }
+                }
+            });
+            expect(sendSuccessResponse).toHaveBeenCalledWith(res, mockUsers, 'Users retrieved successfully');
+        });
+
+        it('should return 404 if no users match the search query', async () => {
+            req.query = { search: 'xyz' };
+
+            (User.findAll as jest.Mock).mockResolvedValue([]);
+
+            await userController.searchUserByName(req, res);
+
+            expect(User.findAll).toHaveBeenCalledWith({
+                where: {
+                    fullName: {
+                        [Op.iLike]: `%${req.query.search}%`
+                    }
+                }
+            });
+            expect(sendNotFoundResponse).toHaveBeenCalledWith(res, 'No users found');
+        });
+
+        it('should return a 400 error if search query is missing', async () => {
+            req.query = {};
+
+            await userController.searchUserByName(req, res);
+
+            expect(sendErrorResponse).toHaveBeenCalledWith(res, { message: 'Search query is required' }, 400);
+        });
+
+        it('should send an error response if search fails', async () => {
+            const error = new Error('Search failed');
+            req.query = { search: 'hoang' };
+
+            (User.findAll as jest.Mock).mockRejectedValue(error);
+
+            await userController.searchUserByName(req, res);
+
+            expect(User.findAll).toHaveBeenCalledWith({
+                where: {
+                    fullName: {
+                        [Op.iLike]: `%${req.query.search}%`
+                    }
+                }
+            });
             expect(sendErrorResponse).toHaveBeenCalledWith(res, error);
         });
     });

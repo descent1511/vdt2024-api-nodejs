@@ -9,5 +9,6 @@ router.get('/users', controller.getAllUser);
 router.get('/users/:id', controller.getUserById);
 router.put('/users/:id', controller.updateUser);
 router.delete('/users/:id', controller.deleteUser);
+router.get('/search', controller.searchUserByName); 
 
 export default router;
