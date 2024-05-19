@@ -9,6 +9,8 @@ export type UserAttributes = {
   dateOfBirth: Date;
   phoneNumber: string;
   gender: string;
+  region : string;
+  imgUrl : string ;
 };
 
 export type UserCreationAttributes = Optional<UserAttributes, 'id'>;
@@ -50,6 +52,18 @@ export class User extends Model<UserAttributes, UserCreationAttributes> {
     allowNull: false,
   })
   phoneNumber!: string;
+
+  @Column({
+    type: DataType.STRING,
+    allowNull: false,
+  })
+  region!: string;
+
+  @Column({
+    type: DataType.STRING,
+    allowNull: true,
+  })
+  imgUrl: string;
 
   @Column({
     type: DataType.STRING,
