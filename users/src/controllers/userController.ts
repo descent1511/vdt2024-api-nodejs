@@ -77,11 +77,9 @@ export default class UserController {
                     }
                 }
             });
-            if (users.length > 0) {
-                sendSuccessResponse(res, users, 'Users retrieved successfully');
-            } else {
-                sendNotFoundResponse(res, 'No users found');
-            }
+            
+            sendSuccessResponse(res, users, 'Users retrieved successfully');
+           
         } catch (error) {
             sendErrorResponse(res, error);
         }
