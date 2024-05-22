@@ -9,7 +9,7 @@ on:
       - main
 
 jobs:
-  build:
+  build-users:
     runs-on: ubuntu-latest
 
     steps:
@@ -23,9 +23,14 @@ jobs:
 
     - name: Install dependencies
       run: npm install
+      working-directory: ./users
 
     - name: Compile TypeScript
       run: npm run build
+      working-directory: ./users
 
     - name: Run tests
       run: npm test
+      working-directory: ./users
+
+
