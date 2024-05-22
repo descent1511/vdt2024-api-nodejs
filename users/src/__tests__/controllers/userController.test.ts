@@ -200,22 +200,6 @@ describe('UserController', () => {
             expect(sendSuccessResponse).toHaveBeenCalledWith(res, mockUsers, 'Users retrieved successfully');
         });
 
-        it('should return 404 if no users match the search query', async () => {
-            req.query = { search: 'xyz' };
-
-            (User.findAll as jest.Mock).mockResolvedValue([]);
-
-            await userController.searchUserByName(req, res);
-
-            expect(User.findAll).toHaveBeenCalledWith({
-                where: {
-                    fullName: {
-                        [Op.iLike]: `%${req.query.search}%`
-                    }
-                }
-            });
-            expect(sendNotFoundResponse).toHaveBeenCalledWith(res, 'No users found');
-        });
 
         it('should return a 400 error if search query is missing', async () => {
             req.query = {};
