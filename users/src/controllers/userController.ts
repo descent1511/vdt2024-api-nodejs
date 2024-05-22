@@ -1,3 +1,4 @@
+import { Op } from 'sequelize';
 import { User } from '../models/user';
 import { sendSuccessResponse, sendCreatedResponse, sendErrorResponse, sendNotFoundResponse } from '../utils/responseHandler';
 
@@ -56,6 +57,30 @@ export default class UserController {
                 res.status(204).send();
             } else {
                 sendNotFoundResponse(res);
+            }
+        } catch (error) {
+            sendErrorResponse(res, error);
+        }
+    };
+
+    searchUserByName = async (req: any, res: any) => {
+        try {
+            const { search } = req.query;
+            console.log(search)
+            if (!search) {
+                return sendErrorResponse(res, { message: 'Search query is required' }, 400);
+            }
+            const users = await User.findAll({
+                where: {
+                    fullName: {
+                        [Op.iLike]: `%${search}%`
+                    }
+                }
+            });
+            if (users.length > 0) {
+                sendSuccessResponse(res, users, 'Users retrieved successfully');
+            } else {
+                sendNotFoundResponse(res, 'No users found');
             }
         } catch (error) {
             sendErrorResponse(res, error);
