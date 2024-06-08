@@ -10,6 +10,7 @@ spec:
     - port: {{ .Values.service.port }}
       targetPort: 8000
       protocol: TCP
-      name: 8000
+      nodePort: {{ .Values.service.nodePort }}
+
   selector:
     {{- include "api-chart.selectorLabels" . | nindent 4 }}
