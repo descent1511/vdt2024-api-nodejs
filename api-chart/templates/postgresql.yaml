@@ -73,14 +73,9 @@ spec:
                   name: {{ .Values.secrets.name }}
                   key: DB_NAME
           volumeMounts:
-            - name: postgredb
+            - name: postgredb-pvc
               mountPath: /var/lib/postgresql/data
-  volumeClaimTemplates:
-    - metadata:
-        name: postgredb
-      spec:
-        accessModes: [ "ReadWriteOnce" ]
-        resources:
-          requests:
-            storage: 1Gi
-        storageClassName: manual
+      volumes:
+        - name: postgredb-pvc
+          persistentVolumeClaim:
+            claimName: postgredb-pvc
