@@ -39,7 +39,7 @@ jobs:
         with:
           repository: descent1511/vdt2024-api-config
           ref: main
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.ACTION_GITHUB_TOKEN }}
 
       - name: Update values.yaml
         run: |
