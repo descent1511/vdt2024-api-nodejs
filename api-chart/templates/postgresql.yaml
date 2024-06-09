@@ -41,11 +41,11 @@ kind: StatefulSet
 metadata:
   name: postgresql
 spec:
+  serviceName: "postgresql"
+  replicas: 1
   selector:
     matchLabels:
       app: postgresql
-  serviceName: "postgresql"
-  replicas: 1
   template:
     metadata:
       labels:
@@ -73,14 +73,9 @@ spec:
                   name: {{ .Values.secrets.name }}
                   key: DB_NAME
           volumeMounts:
-            - name: postgredb
+            - name: postgredb-storage
               mountPath: /var/lib/postgresql/data
-  volumeClaimTemplates:
-    - metadata:
-        name: postgredb
-      spec:
-        accessModes: [ "ReadWriteOnce" ]
-        resources:
-          requests:
-            storage: 1Gi
-        storageClassName: manual
+      volumes:
+        - name: postgredb-storage
+          persistentVolumeClaim:
+            claimName: postgredb-pvc
