@@ -37,7 +37,7 @@ jobs:
       - name: Checkout config repository
         uses: actions/checkout@v4
         with:
-          repository: descent1511/api-config
+          repository: descent1511/vdt2024-api-config
           ref: main
           token: ${{ secrets.GITHUB_TOKEN }}
 
