@@ -5,6 +5,8 @@ import cors from "cors";
 import sequelize from "../providers/db"
 import { Sequelize } from "sequelize-typescript";
 import routes from "../routes/v1/userRoutes"
+import { register } from '../metrics';
+import { metricsMiddleware } from '../middlewares/metricsMiddleware';
 require('dotenv').config()
 
 export default class App {
@@ -26,6 +28,11 @@ export default class App {
         const app = express()
         app.use(cors());
         app.use(bodyParser.json())
+        app.use(metricsMiddleware)
+        app.get('/metrics', async (req, res) => {
+            res.set('Content-Type', register.contentType);
+            res.end(await register.metrics());
+        });
         app.use('/v1', routes)
         return app
       }
