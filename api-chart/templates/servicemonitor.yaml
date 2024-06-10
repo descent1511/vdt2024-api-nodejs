@@ -10,6 +10,7 @@ metadata:
 spec:
   selector:
     matchLabels:
+      release: prometheus-operator
       {{- include "api-chart.selectorLabels" . | nindent 6 }}
   endpoints:
     - port: http
