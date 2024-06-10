@@ -2,6 +2,7 @@
 apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
+  namespace: {{ .Values.servicemonitor.namespace }}
   name: {{ include "api-chart.fullname" . }}-servicemonitor
   labels:
     release: prometheus-operator
