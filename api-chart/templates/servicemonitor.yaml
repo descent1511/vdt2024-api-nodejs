@@ -3,6 +3,7 @@ apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
   name: {{ include "api-chart.fullname" . }}
+  namespace: {{ .Values.serviceMonitor.namespace }}
   labels:
     {{- include "api-chart.labels" . | nindent 4 }}
     {{- with .Values.serviceMonitor.labels }}
