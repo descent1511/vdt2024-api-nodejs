@@ -40,6 +40,9 @@ jobs:
           repository: descent1511/vdt2024-api-config
           ref: main
           token: ${{ secrets.ACTION_GITHUB_TOKEN }}
+          
+      - name: Pull latest changes
+        run: git pull origin main
 
       - name: Update values.yaml
         run: |
