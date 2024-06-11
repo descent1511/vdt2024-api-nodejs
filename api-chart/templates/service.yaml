@@ -13,5 +13,4 @@ spec:
       nodePort: {{ .Values.service.nodePort }}
 
   selector:
-    team: backend
     {{- include "api-chart.selectorLabels" . | nindent 4 }}
