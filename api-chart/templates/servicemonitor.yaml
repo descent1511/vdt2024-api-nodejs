@@ -5,14 +5,11 @@ metadata:
   namespace: {{ .Values.servicemonitor.namespace }}
   name: {{ include "api-chart.fullname" . }}-servicemonitor
   labels:
-    {{- include "api-chart.labels" . | nindent 4 }}
+    release: prometheus-operator
 spec:
   selector:
     matchLabels:
-      release: prometheus-operator
-    namespaceSelector:
-      matchNames:
-      - {{ .Values.servicemonitor.namespace }}
+      {{- include "api-chart.selectorLabels" . | nindent 6 }}
   endpoints:
     - port: http
       interval: {{ .Values.servicemonitor.interval }}
