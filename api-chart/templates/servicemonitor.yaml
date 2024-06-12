@@ -3,6 +3,7 @@ apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
   name: {{ include "api-chart.fullname" . }}
+  namespace: monitoring
   labels:
     {{- include "api-chart.labels" . | nindent 4 }}
     {{- with .Values.serviceMonitor.labels }}
@@ -16,4 +17,5 @@ spec:
     - port: {{ .Values.service.portName }}
       interval: {{ .Values.serviceMonitor.interval }}
       scrapeTimeout: {{ .Values.serviceMonitor.scrapeTimeout }}
+
 {{- end }}
