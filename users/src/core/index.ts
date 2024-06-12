@@ -4,6 +4,7 @@ import bodyParser from "body-parser"
 import cors from "cors";
 import sequelize from "../providers/db"
 import { Sequelize } from "sequelize-typescript";
+import MetricsController from '../controllers/metricController';
 import routes from "../routes/v1/userRoutes"
 import { register } from '../metrics';
 import { metricsMiddleware } from '../middlewares/metricsMiddleware';
@@ -29,6 +30,8 @@ export default class App {
         app.use(cors());
         app.use(bodyParser.json())
         app.use(metricsMiddleware)
+        app.post('/push-frontend-metric', MetricsController.pushFrontendMetric);
+        app.get('/metrics/frontend', MetricsController.getMetrics);
         app.get('/metrics', async (req, res) => {
             res.set('Content-Type', register.contentType);
             res.end(await register.metrics());
