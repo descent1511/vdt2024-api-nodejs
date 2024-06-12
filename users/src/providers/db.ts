@@ -10,7 +10,8 @@ const sequelize = new Sequelize({
     database: process.env.DB_NAME,
     host: process.env.DB_HOST,
     port: dbPort,
-    dialect: "postgres"
+    dialect: "postgres",
+    logging: false
 })
 
 const models = [
@@ -29,9 +30,7 @@ sequelize
 async function testConnection() {
     try {
         await sequelize.authenticate();
-        console.log('Connection has been established successfully.');
     } catch (error) {
-        console.error('Unable to connect to the database:', error);
     }
 }
 

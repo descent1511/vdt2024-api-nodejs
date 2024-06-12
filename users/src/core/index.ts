@@ -8,6 +8,7 @@ import MetricsController from '../controllers/metricController';
 import routes from "../routes/v1/userRoutes"
 import { register } from '../metrics';
 import { metricsMiddleware } from '../middlewares/metricsMiddleware';
+import morgan from 'morgan';
 require('dotenv').config()
 
 export default class App {
@@ -29,6 +30,7 @@ export default class App {
         const app = express()
         app.use(cors());
         app.use(bodyParser.json())
+        app.use(morgan(':method :url :status :res[content-length] - :response-time ms'));
         app.use(metricsMiddleware)
         app.post('/push-frontend-metric', MetricsController.pushFrontendMetric);
         app.get('/metrics/frontend', MetricsController.getMetrics);
@@ -36,6 +38,7 @@ export default class App {
             res.set('Content-Type', register.contentType);
             res.end(await register.metrics());
         });
+        
         app.use('/v1', routes)
         return app
       }
