@@ -1,0 +1,23 @@
+{{- if .Values.serviceMonitor.enabled }}
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: vdt-2024-web-chart
+  labels:
+    app.kubernetes.io/instance: vdt-2024
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: web-chart
+    app.kubernetes.io/version: "1.0"
+    helm.sh/chart: web-chart-0.1.0
+    release: prometheus
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/instance: vdt-2024
+      app.kubernetes.io/name: web-chart
+  endpoints:
+    - port: {{ .Values.service.portName }}
+      interval: {{ .Values.serviceMonitor.interval }}
+      scrapeTimeout: {{ .Values.serviceMonitor.scrapeTimeout }}
+      path: /metrics/frontend
+{{- end }}
