@@ -1,5 +1,6 @@
 import { Sequelize } from 'sequelize-typescript'
 import User from '../models/user'
+import RefreshToken from "../models/refreshToken"
 require('dotenv').config();
 
 const dbPort = process.env.DB_PORT ? parseInt(process.env.DB_PORT, 10) : 5432;
@@ -15,7 +16,7 @@ const sequelize = new Sequelize({
 })
 
 const models = [
-    User 
+    User ,RefreshToken
 ]
 
 sequelize.addModels(models)

@@ -5,10 +5,11 @@ import cors from "cors";
 import sequelize from "../providers/db"
 import { Sequelize } from "sequelize-typescript";
 import MetricsController from '../controllers/metricController';
-import routes from "../routes/v1/userRoutes"
+import routes from "../routes/v1/index"
 import { register } from '../metrics';
 import { metricsMiddleware } from '../middlewares/metricsMiddleware';
 import morgan from 'morgan';
+import rateLimiter from '../middlewares/rateLimiter';
 require('dotenv').config()
 
 export default class App {
@@ -38,7 +39,7 @@ export default class App {
             res.set('Content-Type', register.contentType);
             res.end(await register.metrics());
         });
-        
+        app.use(rateLimiter);
         app.use('/v1', routes)
         return app
       }

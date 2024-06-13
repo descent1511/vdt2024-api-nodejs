@@ -5,9 +5,7 @@ networks:
 
 services:
   users:
-    build:
-      context: ./users
-      dockerfile: Dockerfile
+    image: descent1511/backend:v2.0
     ports:
       - "8000:8000"
     env_file:
